@@ -1,7 +1,9 @@
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class Dice extends JFrame {
 public static void main( String args[] ) {
  JFrame frame = new Dice();
@@ -13,6 +15,7 @@ public static void main( String args[] ) {
 }
 }
     
+@SuppressWarnings("serial")
 class Paneel extends JPanel {
  
 	private Die die;
