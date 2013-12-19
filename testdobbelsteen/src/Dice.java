@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 @SuppressWarnings("serial")
@@ -33,10 +34,12 @@ class Paneel extends JPanel{
 		db = new DB();
 		
 		naam = new JTextField(12);
+		
 		send = new JButton("Verstuur");
 		rollButton = new JButton("Roll");
 		groter = new JButton("Groter");
 		kleiner = new JButton("Kleiner");
+				
 
 		add(groter);
 		add(rollButton);
@@ -46,15 +49,15 @@ class Paneel extends JPanel{
 		rollButton.addActionListener(new RollListener());
 		groter.addActionListener(new GroterListener());
 		kleiner.addActionListener(new KleinerListener());
-		send.addActionListener(new SendListener());
-		
-		send.setVisible(false);
-		naam.setVisible(false);
 	}
+	
+	
 
 	public void paintComponent(Graphics g) {
-		
+		send.setVisible(false);
+		naam.setVisible(false);
 		if(rollThisShit){
+			
 			g.setColor(Color.white);
 			g.fillRect(0, 0, 300, 300);
 			g.setColor(Color.black);
@@ -65,14 +68,16 @@ class Paneel extends JPanel{
 			dobbelsteen.setWorp2(waarde2);
 	
 			totaal = waarde1 + waarde2;
+			// g.drawString("de score is : " + totaal, 20, 50);
+			
 			newVal = totaal;
 			int checked = checkHiger();
 			if(checked == 2){
 				// Goed geraden
-				rounds++;
-				g.drawString("de score is : " + rounds, 20, 50);
+				g.drawString("de score is : " + totaal, 20, 50);
 				System.out.print("Vorige waarde: " + lastVal + " Waarde nu: " + totaal + "\r\n");
 				lastVal = newVal;
+				rounds++;
 			}else if(checked == 1){
 				// Nog niet begonnen
 				System.out.print("We zijn nog niet begonnen\r\n");
@@ -83,19 +88,25 @@ class Paneel extends JPanel{
 				lastVal = 0;
 				rollThisShit = false;
 				
-				groter.setVisible(false);
-				kleiner.setVisible(false);
-				rollButton.setVisible(false);
+				remove(groter);
+				remove(kleiner);
+				remove(rollButton);
 				
-				g.setColor(Color.WHITE);
+				g.setColor(Color.gray);
 				//g.fillRect(0, 0, 300, 300);
-				g.setColor(Color.BLACK);
-				g.setFont(new Font("TimesRoman", Font.PLAIN, 18)); 
-				g.drawString("Game Over.",50,210);
-				g.drawString("Uw Score is: " + rounds,50,230);
-				
 				send.setVisible(true);
 				naam.setVisible(true);
+			//	g.setColor(Color.BLACK);
+			//	g.drawString("test", 50,50);
+				
+				
+				
+				// String name =  JOptionPane.showInputDialog("Voer uw naam in");
+				// JOptionPane.showMessageDialog(null,name);
+				// db.addScore(name, rounds);
+				//System.out.print("knop gedrukt");
+				
+			
 			}
 		}
 	}
@@ -138,7 +149,9 @@ class Paneel extends JPanel{
 			g.fillOval(xOffset + 75, 110, 20, 20);
 			g.fillOval(xOffset + 75, 140, 20, 20);
 			break;
+
 		}
+
 		return waarde;
 
 	}
@@ -170,7 +183,6 @@ class Paneel extends JPanel{
 				rollThisShit = true;
 				if (event.getSource() == rollButton) {
 					repaint();
-					rollButton.setVisible(false);
 				}
 			}
 		}
@@ -192,24 +204,6 @@ class Paneel extends JPanel{
 			rollThisShit = true;
 			higher = false;
 			if (event.getSource() == kleiner) {
-				repaint();
-			}
-		}
-	}
-	
-	private class SendListener implements ActionListener {
-		public void actionPerformed(ActionEvent event) {
-			// since only one widget this should be true
-			rollThisShit = false;
-			if (event.getSource() == send) {
-				db.addScore(naam.getText(), rounds);
-				System.out.print("Score toegevoegd met naam: " + naam.getText() + " met score: " + rounds + "\r\n");
-				send.setVisible(false);
-				naam.setVisible(false);
-				groter.setVisible(true);
-				kleiner.setVisible(true);
-				rollThisShit = true;
-				rounds = 0;
 				repaint();
 			}
 		}
